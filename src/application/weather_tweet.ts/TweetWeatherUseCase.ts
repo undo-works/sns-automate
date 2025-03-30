@@ -18,6 +18,7 @@ export class TweetWeatherUseCase {
 
     // Twitterにツイートする
     const twitterClient = new TwitterClient();
+    await twitterClient.initialize();
     await twitterClient.tweetWithImage(
       filepath,
       "今日の天気予報です！\n今日も一日頑張りましょう！\n#天気予報 #天気 #WeatherForecast #Weather\n＊これは自動投稿です。\n＊天気情報取得はOpenWeatherMapを使用しています。"

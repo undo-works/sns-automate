@@ -1,4 +1,5 @@
 import { TwitterApi, TwitterApiReadWrite } from "twitter-api-v2";
+import { SsmParameter } from "../aws/SsmParameter";
 require("dotenv").config();
 
 export default class TwitterClient {
@@ -6,21 +7,52 @@ export default class TwitterClient {
    * Twitter APIクライアント
    */
   private client: TwitterApiReadWrite;
+  /**
+   * SSMのパラメタストアクライアント
+   */
+  private ssmClient = new SsmParameter();
 
-  constructor() {
+  /** TwitterアプリキーのSSMパラメタ名 */
+  private readonly APP_KEY_SSM_PARAMETER_NAME = "/KG-7th/SNS-AUTOMATE/APP_KEY";
+
+  /** TwitterアプリシークレットのSSMパラメタ名 */
+  private readonly APP_SECRET_SSM_PARAMETER_NAME =
+    "/KG-7th/SNS-AUTOMATE/APP_SECRET";
+
+  /** TwitterアクセストークンのSSMパラメタ名 */
+  private readonly ACCESS_TOKEN_SSM_PARAMETER_NAME =
+    "/KG-7th/SNS-AUTOMATE/ACCESS_TOKEN";
+
+  /** TwitterシークレットトークンのSSMパラメタ名 */
+  private readonly ACCESS_TOKEN_SECRET_SSM_PARAMETER_NAME =
+    "/KG-7th/SNS-AUTOMATE/ACCESS_TOKEN_SECRET";
+
+  constructor() {}
+
+  /**
+   * Twitter APIクライアントの初期化
+   */
+  async initialize(): Promise<void> {
     // Twitter APIキーインスタンスを生成
     const twitterInstance = new TwitterApi({
       // APUキーを環境変数から取得
-      appKey: process.env.APP_KEY!,
+      appKey: await this.ssmClient.getSsmParameter(
+        this.APP_KEY_SSM_PARAMETER_NAME
+      ),
       // APIシークレットを環境変数から取得
-      appSecret: process.env.APP_SECRET!,
+      appSecret: await this.ssmClient.getSsmParameter(
+        this.APP_SECRET_SSM_PARAMETER_NAME
+      ),
       // access tokenを環境変数から取得
-      accessToken: process.env.ACCESS_TOKEN!,
+      accessToken: await this.ssmClient.getSsmParameter(
+        this.ACCESS_TOKEN_SSM_PARAMETER_NAME
+      ),
       // access token secretを環境変数から取得
-      accessSecret: process.env.ACCESS_TOKEN_SECRET!,
+      accessSecret: await this.ssmClient.getSsmParameter(
+        this.ACCESS_TOKEN_SECRET_SSM_PARAMETER_NAME
+      ),
     });
-    // 権限はread/writeを指定
-    this.client = twitterInstance.readWrite;
+    this.client = twitterInstance.readWrite; // 認証情報を指定してTwitter APIクライアントを生成
   }
 
   /**
