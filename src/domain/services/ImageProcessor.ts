@@ -11,7 +11,7 @@ export class ImageProcessor {
    */
   async generateImage(japanWeather: JapanWeather[]) {
     try {
-      const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
+      const font = await Jimp.loadFont("./assets/fonts/brandon.fnt");
       const mapImage = await Jimp.read(
         `${this.ROOT_URL}/assets/images/weather/weather_back.png`
       );
@@ -55,8 +55,8 @@ export class ImageProcessor {
 
           mapImage.print(
             font,
-            index * 70 + city.location.x + 8,
-            city.location.y + 50,
+            index * 74 + city.location.x + 8,
+            city.location.y + 46,
             hourWeather.temp
           );
         });

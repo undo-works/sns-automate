@@ -1,3 +1,20 @@
+# デプロイ方法
+
+```bash
+# プロジェクトのデプロイ
+cdk deploy
+```
+
+# Bitmapの文字画像生成
+
+Lambdaで公開すると、Jimpの文字フォントが読み出せなくなるので
+プロジェクト内に静的ファイルとして配置しておく
+
+## 参考URL
+
+BMfontツールを利用したフォントの生成方法について
+https://nakamura001.hatenablog.com/entry/20120910/1347241168
+
 # Welcome to your CDK TypeScript project
 
 This is a blank project for CDK development with TypeScript.
