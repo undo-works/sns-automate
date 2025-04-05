@@ -15,4 +15,16 @@ export class SystemClock {
     console.log(strTime);
     return strTime;
   }
+
+  /**
+ * 現在日時を取得する
+ * @returns 現在日時
+ */
+  public static getToday(): string {
+    const jpYear = moment().tz("Asia/Tokyo").format("YYYY");
+    const jpMonth = moment().tz("Asia/Tokyo").format("MM");
+    const jpDate = moment().tz("Asia/Tokyo").format("DD");
+    const strTime = jpYear + "/" + jpMonth + "/" + jpDate;
+    return strTime;
+  }
 }

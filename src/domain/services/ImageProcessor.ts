@@ -1,9 +1,10 @@
 import Jimp = require("jimp");
 import JapanWeather from "../../domain/models/JapanWeather";
 import { SystemClock } from "../../infrastructure/datetime/SystemClock";
+require("dotenv").config();
 
 export class ImageProcessor {
-  ROOT_URL = ".";
+  ROOT_URL = process.env.ROOT_URL || "///";
 
   /**
    * 画像を生成する
@@ -11,7 +12,7 @@ export class ImageProcessor {
    */
   async generateImage(japanWeather: JapanWeather[]) {
     try {
-      const font = await Jimp.loadFont("./assets/fonts/brandon.fnt");
+      const font = await Jimp.loadFont(`${this.ROOT_URL}/assets/fonts/brandon.fnt`);
       const mapImage = await Jimp.read(
         `${this.ROOT_URL}/assets/images/weather/weather_back.png`
       );
@@ -61,6 +62,15 @@ export class ImageProcessor {
           );
         });
       });
+
+      // 今日の日付を入れる
+      const font64px = await Jimp.loadFont(`${this.ROOT_URL}/assets/fonts/brandon_64.fnt`);
+      mapImage.print(
+        font64px,
+        180,
+        160,
+        SystemClock.getToday(),
+      );
 
       const filename = `${
         this.ROOT_URL
