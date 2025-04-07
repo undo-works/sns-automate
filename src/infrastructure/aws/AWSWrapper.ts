@@ -9,9 +9,9 @@ export default class AWSWrapper {
 
   constructor() {
     this.aws.config.update({
-      region: process.env.AWS_REGION,
-      accessKeyId: process.env.AWS_ACCESS_KEY,
-      secretAccessKey: process.env.AWS_PRIVATE_KEY,
+      region: process.env.AWS_SSM_REGION,
+      accessKeyId: process.env.AWS_SSM_ACCESS_KEY,
+      secretAccessKey: process.env.AWS_SSM_PRIVATE_KEY,
     });
   }
 }

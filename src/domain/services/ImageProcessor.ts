@@ -12,9 +12,9 @@ export class ImageProcessor {
    */
   async generateImage(japanWeather: JapanWeather[]) {
     try {
-      const font = await Jimp.loadFont(`${this.ROOT_URL}/assets/fonts/brandon.fnt`);
+      const font = await Jimp.loadFont(`${this.ROOT_URL}/fonts/brandon.fnt`);
       const mapImage = await Jimp.read(
-        `${this.ROOT_URL}/assets/images/weather/weather_back.png`
+        `${this.ROOT_URL}/images/weather/weather_back.png`
       );
       const [
         clearImage,
@@ -24,12 +24,12 @@ export class ImageProcessor {
         snowImage,
         faceImage,
       ] = await Promise.all([
-        Jimp.read(`${this.ROOT_URL}/assets/images/weather/hare.png`),
-        Jimp.read(`${this.ROOT_URL}/assets/images/weather/kumori.png`),
-        Jimp.read(`${this.ROOT_URL}/assets/images/weather/umbrella.png`),
-        Jimp.read(`${this.ROOT_URL}/assets/images/weather/mist.png`),
-        Jimp.read(`${this.ROOT_URL}/assets/images/weather/snow.png`),
-        Jimp.read(`${this.ROOT_URL}/assets/images/weather/face.png`),
+        Jimp.read(`${this.ROOT_URL}/images/weather/hare.png`),
+        Jimp.read(`${this.ROOT_URL}/images/weather/kumori.png`),
+        Jimp.read(`${this.ROOT_URL}/images/weather/umbrella.png`),
+        Jimp.read(`${this.ROOT_URL}/images/weather/mist.png`),
+        Jimp.read(`${this.ROOT_URL}/images/weather/snow.png`),
+        Jimp.read(`${this.ROOT_URL}/images/weather/face.png`),
       ]);
 
       faceImage.scale(0.2).circle();
@@ -64,7 +64,7 @@ export class ImageProcessor {
       });
 
       // 今日の日付を入れる
-      const font64px = await Jimp.loadFont(`${this.ROOT_URL}/assets/fonts/brandon_64.fnt`);
+      const font64px = await Jimp.loadFont(`${this.ROOT_URL}/fonts/brandon_64.fnt`);
       mapImage.print(
         font64px,
         180,
@@ -72,9 +72,7 @@ export class ImageProcessor {
         SystemClock.getToday(),
       );
 
-      const filename = `${
-        this.ROOT_URL
-      }/assets/outputs/forcast-${SystemClock.getTimeStamp()}`;
+      const filename = `/tmp/outputs/forcast-${SystemClock.getTimeStamp()}`;
       const result = await mapImage.writeAsync(`${filename}.${"png"}`);
   
       return `${filename}.${"png"}`;
